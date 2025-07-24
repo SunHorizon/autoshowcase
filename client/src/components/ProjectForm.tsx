@@ -14,7 +14,6 @@ function ProjectForm () {
         
     }
 
-
     return (
        <form className="project-form" onSubmit={handleSubmit}>
             <h2>📁 Project Info</h2>

@@ -1,0 +1,27 @@
+
+
+.video-options {
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #f0f0f0;
+}
+
+.video-options h3 {
+    margin-top: 9;
+}
+
+.video-options label {
+    display: block;
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.video-options select,
+.video-options input[type="color"] {
+    display: block;
+    margin-top: 0.5rem;
+    padding: 0.4rem;
+    font-size: 1rem;
+}
