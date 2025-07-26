@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import ProjectForm from '../components/ProjectForm';
 import ProjectPreview from '../components/ProjectPreview';
 import VideoOptions from '../components/VideoOptions';
@@ -6,14 +7,8 @@ import '../styles/home.css'
 
 function Home () {
 
-
-// this const is temp. remove this later.
-const project = {
-  name: "My Cool Project",
-  description: "An amazing project that does cool things.",
-  technologies: ["React", "Node.js", "CSS"],
-  githubUrl: "https://github.com/username/repo"
-}
+    const [projectInfo, setProjectInfo] = useState({});
+    const [videoOptions, setVideoOptions] = useState({});
 
 
     return (
@@ -21,11 +16,11 @@ const project = {
             <h1>🎬 AutoShowcase: Portfolio Video Generator</h1>
             <div className='main-section'>
                 <div className='left-pane'>
-                    <ProjectForm />
-                    <VideoOptions options onChange />
+                    <ProjectForm projectInfo setProjectInfo/>
+                    <VideoOptions videoOptions setVideoOptions />
                 </div>
                 <div className='right-pane'>
-                    <ProjectPreview project={project} />
+                    <ProjectPreview project={projectInfo} />
                 </div>
             </div>
         </div>

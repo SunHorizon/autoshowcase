@@ -4,26 +4,52 @@ import { useState} from "react";
 import "../styles/ProjectForm.css"
 
 
-function ProjectForm () {
-    const [githubUrl , setGithubUrl] = useState("");
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
+function ProjectForm ({projectInfo, setProjectInfo}: {projectInfo: any, setProjectInfo: any}) {
 
-    const handleSubmit = (e: any) => {
-        e.preventDefault();
-        
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+
+    const handleChange = (e: any) => {
+        const { name, value } = e.target;
+        setProjectInfo({...projectInfo, [name] : value})
+    }
+
+    const fetchProjectInfo = async () => {
+        if(!projectInfo.githubUrl){
+            setError("Please enter a Github URL first.");
+            return;
+        }
+        try{
+            setLoading(true);
+            setError('');
+            const res = await fetch('/api/fetch-github', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ repoURL: projectInfo.githubUrl }),
+            });
+
+            if (!res.ok) throw new Error('Failed to fetch project info');
+            const data = await res.json();
+            setProjectInfo({...projectInfo, ...data});
+        } catch(err : any){
+            setError(err.message || "something went wrong");
+        }finally{
+            setLoading(false);
+        }
     }
 
     return (
-       <form className="project-form" onSubmit={handleSubmit}>
+       <form className="project-form">
             <h2>📁 Project Info</h2>
             <div className="form-group">
                 <label htmlFor="githubUrl">GitHub URL</label>
                 <input 
                     type="url"
                     id="githubUrl"
-                    value={githubUrl}
-                    onChange={(e) => setGithubUrl(e.target.value)}
+                    value={projectInfo.githubUrl}
+                    onChange={handleChange}
                     placeholder="https://github.com/user/repo"
                     required
                 />
@@ -33,8 +59,8 @@ function ProjectForm () {
                 <input
                     type="text"
                     id="title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    value={projectInfo.title}
+                    onChange={handleChange}
                     placeholder="Awesome Project"
                     required
                 />
@@ -43,13 +69,17 @@ function ProjectForm () {
                 <label htmlFor="description">Project Description</label>
                 <textarea
                     id="description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                    value={projectInfo.description}
+                    onChange={handleChange}
                     placeholder="Brief description of your project..."
                     rows={4}
                     required
                 />
             </div>
+            <button type="button" onClick={fetchProjectInfo} disabled={loading}>
+                {loading ? 'Fetching...' : 'Fetch Project'}
+            </button>
+            {error && <p className="error">{error}</p>}
        </form>
     )
 }

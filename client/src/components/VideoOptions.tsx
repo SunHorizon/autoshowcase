@@ -1,11 +1,11 @@
 
 import '../styles/VideoOptions.css'
 
-const VideoOptions = ({ options, onChange}: { options: any, onChange: any}) => {
+const VideoOptions = ({ videoOptions, setVideoOptions}: { videoOptions: any, setVideoOptions: any}) => {
 
     const handleChange = (e: any) => {
         const { name, value } = e.target;
-        onChange({...options, [name] : value})
+        setVideoOptions({...videoOptions, [name] : value})
     }
 
     return (
@@ -14,7 +14,7 @@ const VideoOptions = ({ options, onChange}: { options: any, onChange: any}) => {
 
             <label>
                 Template:
-                <select name="template" value={options.template} onChange={handleChange}>
+                <select name="template" value={videoOptions.template} onChange={handleChange}>
                     <option value="modern">Modern</option>
                     <option value="minimal">Minimal</option>
                     <option value="bold">Bold</option>
@@ -25,13 +25,13 @@ const VideoOptions = ({ options, onChange}: { options: any, onChange: any}) => {
                 <input
                     type="color"
                     name="themeColor"
-                    value={options.themeColor}
+                    value={videoOptions.themeColor}
                     onChange={handleChange}
                 />   
             </label>
             <label>
                 Voiceover:
-                <select name="voiceover" value={options.voiceover} onChange={handleChange}>
+                <select name="voiceover" value={videoOptions.voiceover} onChange={handleChange}>
                     <option value="none">None</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
