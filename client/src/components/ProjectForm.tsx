@@ -1,5 +1,7 @@
 
-import { useState} from "react";
+import {useState} from "react";
+import axios from 'axios'
+
 
 import "../styles/ProjectForm.css"
 
@@ -10,8 +12,8 @@ function ProjectForm ({projectInfo, setProjectInfo}: {projectInfo: any, setProje
     const [error, setError] = useState('');
 
     const handleChange = (e: any) => {
-        const { name, value } = e.target;
-        setProjectInfo({...projectInfo, [name] : value})
+        const { id, value } = e.target;
+        setProjectInfo({...projectInfo, [id] : value})
     }
 
     const fetchProjectInfo = async () => {
@@ -22,16 +24,8 @@ function ProjectForm ({projectInfo, setProjectInfo}: {projectInfo: any, setProje
         try{
             setLoading(true);
             setError('');
-            const res = await fetch('/api/fetch-github', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ repoURL: projectInfo.githubUrl }),
-            });
-
-            if (!res.ok) throw new Error('Failed to fetch project info');
-            const data = await res.json();
+            const res = await axios.post('http://localhost:3000/api/fetch-github', { repoURL: projectInfo.githubUrl });
+            const data = res.data;
             setProjectInfo({...projectInfo, ...data});
         } catch(err : any){
             setError(err.message || "something went wrong");
@@ -48,7 +42,6 @@ function ProjectForm ({projectInfo, setProjectInfo}: {projectInfo: any, setProje
                 <input 
                     type="url"
                     id="githubUrl"
-                    value={projectInfo.githubUrl}
                     onChange={handleChange}
                     placeholder="https://github.com/user/repo"
                     required
@@ -59,7 +52,6 @@ function ProjectForm ({projectInfo, setProjectInfo}: {projectInfo: any, setProje
                 <input
                     type="text"
                     id="title"
-                    value={projectInfo.title}
                     onChange={handleChange}
                     placeholder="Awesome Project"
                     required
@@ -69,7 +61,6 @@ function ProjectForm ({projectInfo, setProjectInfo}: {projectInfo: any, setProje
                 <label htmlFor="description">Project Description</label>
                 <textarea
                     id="description"
-                    value={projectInfo.description}
                     onChange={handleChange}
                     placeholder="Brief description of your project..."
                     rows={4}

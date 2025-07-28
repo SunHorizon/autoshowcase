@@ -16,8 +16,8 @@ function Home () {
             <h1>🎬 AutoShowcase: Portfolio Video Generator</h1>
             <div className='main-section'>
                 <div className='left-pane'>
-                    <ProjectForm projectInfo setProjectInfo/>
-                    <VideoOptions videoOptions setVideoOptions />
+                    <ProjectForm projectInfo={projectInfo} setProjectInfo={setProjectInfo}/>
+                    <VideoOptions videoOptions={videoOptions} setVideoOptions={setVideoOptions} />
                 </div>
                 <div className='right-pane'>
                     <ProjectPreview project={projectInfo} />
