@@ -11,11 +11,6 @@ function ProjectForm ({projectInfo, setProjectInfo}: {projectInfo: any, setProje
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-    const handleChange = (e: any) => {
-        const { id, value } = e.target;
-        setProjectInfo({...projectInfo, [id] : value})
-    }
-
     const fetchProjectInfo = async () => {
         if(!projectInfo.githubUrl){
             setError("Please enter a Github URL first.");
@@ -34,15 +29,24 @@ function ProjectForm ({projectInfo, setProjectInfo}: {projectInfo: any, setProje
         }
     }
 
+    const handleSubmit = async (e: any) => {
+        e.preventDefault();      
+        projectInfo.githubUrl = e.target.githubUrl.value;
+        projectInfo.title = e.target.title.value;
+        projectInfo.report = e.target.report.value;
+
+        setProjectInfo({...projectInfo});
+        fetchProjectInfo();
+    }
+  
     return (
-       <form className="project-form">
+       <form className="project-form" onSubmit={handleSubmit}>
             <h2>📁 Project Info</h2>
             <div className="form-group">
                 <label htmlFor="githubUrl">GitHub URL</label>
                 <input 
                     type="url"
                     id="githubUrl"
-                    onChange={handleChange}
                     placeholder="https://github.com/user/repo"
                     required
                 />
@@ -52,22 +56,20 @@ function ProjectForm ({projectInfo, setProjectInfo}: {projectInfo: any, setProje
                 <input
                     type="text"
                     id="title"
-                    onChange={handleChange}
                     placeholder="Awesome Project"
                     required
                 />
             </div>
             <div className="form-group">
-                <label htmlFor="description">Project Description</label>
+                <label htmlFor="report">Project Description</label>
                 <textarea
-                    id="description"
-                    onChange={handleChange}
+                    id="report"
                     placeholder="Brief description of your project..."
                     rows={4}
                     required
                 />
             </div>
-            <button type="button" onClick={fetchProjectInfo} disabled={loading}>
+            <button type="submit" disabled={loading}>
                 {loading ? 'Fetching...' : 'Fetch Project'}
             </button>
             {error && <p className="error">{error}</p>}

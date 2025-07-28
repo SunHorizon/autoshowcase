@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProjectForm from '../components/ProjectForm';
 import ProjectPreview from '../components/ProjectPreview';
 import VideoOptions from '../components/VideoOptions';
@@ -10,6 +10,9 @@ function Home () {
     const [projectInfo, setProjectInfo] = useState({});
     const [videoOptions, setVideoOptions] = useState({});
 
+    useEffect(() => {
+        console.log(projectInfo);
+    }, [projectInfo])
 
     return (
         <div className='home-container'>
@@ -17,10 +20,8 @@ function Home () {
             <div className='main-section'>
                 <div className='left-pane'>
                     <ProjectForm projectInfo={projectInfo} setProjectInfo={setProjectInfo}/>
-                    <VideoOptions videoOptions={videoOptions} setVideoOptions={setVideoOptions} />
-                </div>
-                <div className='right-pane'>
                     <ProjectPreview project={projectInfo} />
+                    <VideoOptions videoOptions={videoOptions} setVideoOptions={setVideoOptions} />
                 </div>
             </div>
         </div>

@@ -13,7 +13,7 @@ const ProjectPreview = ({ project }:{ project: any}) => {
     return (
         <div className="preview-container">
             <h2>{ project.name || 'Project Title'}</h2>
-            <p className="description">{project.description || 'Project description will appear here'}</p>
+            <p className="description">{project.description || project.report || 'Project description will appear here'}</p>
             <div className="tech-stack">
                 <strong>Technologies:</strong>
                 <ul>
